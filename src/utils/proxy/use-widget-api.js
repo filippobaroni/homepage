@@ -6,6 +6,8 @@ export default function useWidgetAPI(widget, ...options) {
   const config = {};
   if (options && options[1]?.refreshInterval) {
     config.refreshInterval = options[1].refreshInterval;
+  } else if (widget.refreshInterval) {
+    config.refreshInterval = widget.refreshInterval;
   }
   let url = formatProxyUrl(widget, ...options);
   if (options[0] === "") {

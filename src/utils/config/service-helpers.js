@@ -436,9 +436,23 @@ export function cleanServiceGroups(groups) {
           }
         }
 
+        let refreshIntervalValue = refreshInterval;
+        if (typeof refreshInterval === "string") {
+          try {
+            refreshIntervalValue = JSON.parse(refreshInterval);
+            if (refreshIntervalValue) {
+              refreshIntervalValue = Math.max(1000, refreshIntervalValue);
+            }
+          } catch (e) {
+            logger.error("Invalid refresh interval detected in config for service '%s'", service.name);
+            refreshIntervalValue = null;
+          }
+        }
+
         const widget = {
           type,
           fields: fieldsList || null,
+          refreshInterval: refreshIntervalValue || null,
           hide_errors: hideErrors || false,
           service_name: service.name,
           service_group: serviceGroup.name,
@@ -513,7 +527,6 @@ export function cleanServiceGroups(groups) {
           if (allowFullscreen) widget.allowFullscreen = allowFullscreen;
           if (loadingStrategy) widget.loadingStrategy = loadingStrategy;
           if (allowScrolling) widget.allowScrolling = allowScrolling;
-          if (refreshInterval) widget.refreshInterval = refreshInterval;
         }
         if (["deluge", "qbittorrent"].includes(type)) {
           if (enableLeechProgress !== undefined) widget.enableLeechProgress = JSON.parse(enableLeechProgress);
@@ -575,7 +588,6 @@ export function cleanServiceGroups(groups) {
           } else {
             widget.chart = true;
           }
-          if (refreshInterval) widget.refreshInterval = refreshInterval;
           if (pointsLimit) widget.pointsLimit = pointsLimit;
           if (diskUnits) widget.diskUnits = diskUnits;
         }
@@ -592,7 +604,6 @@ export function cleanServiceGroups(groups) {
         if (type === "customapi") {
           if (mappings) widget.mappings = mappings;
           if (display) widget.display = display;
-          if (refreshInterval) widget.refreshInterval = refreshInterval;
         }
         if (type === "calendar") {
           if (integrations) widget.integrations = integrations;
@@ -635,7 +646,6 @@ export function cleanServiceGroups(groups) {
         }
         if (type === "prometheusmetric") {
           if (metrics) widget.metrics = metrics;
-          if (refreshInterval) widget.refreshInterval = refreshInterval;
         }
         if (type === "spoolman") {
           if (spoolIds !== undefined) widget.spoolIds = spoolIds;

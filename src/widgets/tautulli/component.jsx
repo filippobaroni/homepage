@@ -84,7 +84,7 @@ function SingleSessionEntry({ session, enableUser, showEpisodeNumber }) {
         <div className="grow " />
         <div className="self-center text-xs flex justify-end mr-2 z-10">
           {millisecondsToString(view_offset)}
-          <span className="mx-0.5 text-[8px]">/</span>
+          <span className="mx-0.5">/</span>
           {millisecondsToString(duration)}
         </div>
       </div>
